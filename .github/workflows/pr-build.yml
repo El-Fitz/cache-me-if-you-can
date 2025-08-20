@@ -1,0 +1,26 @@
+name: PR Build
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Resolve Swift package dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project client-ios/cache-me-if-you-can/cache-me-if-you-can.xcodeproj \
+            -scheme cache-me-if-you-can
+
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project client-ios/cache-me-if-you-can/cache-me-if-you-can.xcodeproj \
+            -scheme cache-me-if-you-can \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -enableCodeCoverage YES
