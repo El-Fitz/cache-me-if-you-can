@@ -2,6 +2,9 @@
 // https://docs.swift.org/swift-book
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public struct CacheResult {
     public let cacheConfiguration: CacheConfiguration
